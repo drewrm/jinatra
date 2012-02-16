@@ -1,7 +1,7 @@
-Jinatra - A (poor) Sinatra-eque web framework for Java
+Jinatra - A (poor) Sinatra-esque web framework for Java
 ======================================================
 
-My own implementation of an annotation driven, sinatra-esqe web framework in java.
+My own implementation of an annotation driven, sinatra-esque web framework in java.
 Don't use this!
 
 Example:
