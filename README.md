@@ -1,8 +1,8 @@
 Jinatra - A (poor) Sinatra-esque web framework for Java
 ======================================================
 
-My own implementation of an annotation driven, sinatra-esque web framework in java.
-Don't use this!
+My own implementation of an annotation driven, sinatra-esque web framework in java. 
+Don't use this, it's not meant to be useful, just doing it because I can.
 
 Example:
 
