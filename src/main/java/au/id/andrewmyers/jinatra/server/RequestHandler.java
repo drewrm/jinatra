@@ -19,14 +19,14 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 public class RequestHandler extends AbstractHandler {
 
     private JinatraApplication app;
-    
+
     public RequestHandler(JinatraApplication app) {
         this.app = app;
     }
-    
+
     @Override
-    public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (app.hasRoute(target)) { 
+    public void handle(final String target, final Request baseRequest, final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
+        if (app.hasRoute(target, request.getMethod())) {
             baseRequest.setHandled(true);
             response.setStatus(HttpServletResponse.SC_OK);
             app.dispatch(target, request, response);

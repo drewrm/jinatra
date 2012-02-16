@@ -18,7 +18,7 @@ public class JinatraServer {
 
     private Server server;
 
-    public JinatraServer(JinatraApplication app) {
+    public JinatraServer(final JinatraApplication app) {
         server = new Server(app.getPort());
         server.setHandler(new RequestHandler(app));
         server.setStopAtShutdown(true);
