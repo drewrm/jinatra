@@ -26,13 +26,9 @@ public class ApplicationScanner {
         Set<Class<?>> applications = reflections.getTypesAnnotatedWith(Application.class);
         List<JinatraApplication> apps = new ArrayList<JinatraApplication>();
         
-        for (Class clazz : applications) {
-            Application a = (Application) clazz.getAnnotation(Application.class);
-            final String bind = ((Application)a).bind();
-            final int port = a.port();
-            
+        for (final Class clazz : applications) {
             try {
-                apps.add(new JinatraApplication(bind, port, clazz));
+                apps.add(new JinatraApplication(clazz));
             } catch (InstantiationException ex) {
                 Logger.getLogger(ApplicationScanner.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IllegalAccessException ex) {

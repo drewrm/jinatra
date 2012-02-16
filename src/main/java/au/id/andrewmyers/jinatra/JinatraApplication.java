@@ -4,6 +4,7 @@
  */
 package au.id.andrewmyers.jinatra;
 
+import au.id.andrewmyers.jinatra.annotations.Application;
 import au.id.andrewmyers.jinatra.annotations.Get;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,9 +26,10 @@ public class JinatraApplication {
     private Object instance;
     private HashMap<String, Method> getActions;
     
-    public JinatraApplication(final String bind, final int port, Class clazz) throws InstantiationException, IllegalAccessException{ 
-        this.bind = bind;
-        this.port = port;
+    public JinatraApplication(final Class clazz) throws InstantiationException, IllegalAccessException{ 
+        Application app = (Application) clazz.getAnnotation(Application.class);
+        this.bind = app.bind();
+        this.port = app.port();
         this.clazz = clazz;
         this.instance = clazz.newInstance();
         
@@ -47,24 +49,10 @@ public class JinatraApplication {
     }
 
     /**
-     * @param port the port to set
-     */
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    /**
      * @return the bind
      */
-    public String getBind() {
+    public String getBindAddress() {
         return bind;
-    }
-
-    /**
-     * @param bind the bind to set
-     */
-    public void setBind(String bind) {
-        this.bind = bind;
     }
     
     public boolean hasRoute(String route) {
