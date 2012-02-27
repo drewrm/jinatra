@@ -6,6 +6,7 @@
 package au.id.andrewmyers.jinatra.server;
 
 import au.id.andrewmyers.jinatra.JinatraApplication;
+import java.net.InetSocketAddress;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.eclipse.jetty.server.Server;
@@ -19,7 +20,8 @@ public class JinatraServer {
     private Server server;
 
     public JinatraServer(final JinatraApplication app) {
-        server = new Server(app.getPort());
+        InetSocketAddress bindAddress = new InetSocketAddress(app.getBindAddress(), app.getPort());
+        server = new Server(bindAddress);
         server.setHandler(new RequestHandler(app));
         server.setStopAtShutdown(true);
     }

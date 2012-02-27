@@ -22,7 +22,7 @@ public class Jinatra {
         }
         
         for (JinatraApplication app : apps) {
-            Logger.getLogger(Jinatra.class.getName()).log(Level.INFO, null, "Starting application on port " + app.getPort());
+            Logger.getLogger(JinatraServer.class.getName()).log(Level.INFO, "Starting application {0} on port {1}", new Object[]{app.getName(), app.getPort()});
             JinatraServer s = new JinatraServer(app);
             s.start();
         }

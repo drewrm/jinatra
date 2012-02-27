@@ -26,7 +26,7 @@ public class RequestHandler extends AbstractHandler {
 
     @Override
     public void handle(final String target, final Request baseRequest, final HttpServletRequest request, final HttpServletResponse response) throws IOException, ServletException {
-        if (app.hasRoute(target, request.getMethod())) {
+        if (app.getRoute(target, request.getMethod()) != null) {
             baseRequest.setHandled(true);
             response.setStatus(HttpServletResponse.SC_OK);
             app.dispatch(target, request, response);

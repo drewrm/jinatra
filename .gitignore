@@ -1,2 +1,3 @@
 target/*
 nbactions.xml
+/src/main/java/au/id/andrewmyers/jinatra/TestApplication.java

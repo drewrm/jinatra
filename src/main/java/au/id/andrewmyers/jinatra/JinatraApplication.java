@@ -6,6 +6,7 @@ package au.id.andrewmyers.jinatra;
 
 import au.id.andrewmyers.jinatra.annotations.*;
 import au.id.andrewmyers.jinatra.http.HttpMethod;
+import au.id.andrewmyers.jinatra.http.Route;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,9 +26,8 @@ public class JinatraApplication {
     private int port;
     private String bind;
     private String name;
-    private Class clazz;
     private Object instance;
-    private Map<String, Map> actions;
+    private Map<String, Map<String, Route>> actions;
 
     public JinatraApplication(final Class clazz) throws InstantiationException, IllegalAccessException {
         Application app = (Application) clazz.getAnnotation(Application.class);
@@ -35,30 +35,40 @@ public class JinatraApplication {
         this.port = app.port();
         this.name = app.name();
 
-        this.clazz = clazz;
         this.instance = clazz.newInstance();
 
-        actions = new HashMap<String, Map>();
+        actions = new HashMap<String, Map<String, Route>>();
 
         for (HttpMethod httpMethod : HttpMethod.values()) {
-            actions.put(httpMethod.getName(), new HashMap<String, Method>());
+            actions.put(httpMethod.getName(), new HashMap<String, Route>());
         }
 
         for (Method m : clazz.getDeclaredMethods()) {
             for (HttpMethod httpMethod : HttpMethod.values()) {
-                System.out.println("Has anotation " + httpMethod.getType().getCanonicalName() + " on method " + m.getName() + " " + m.isAnnotationPresent(httpMethod.getType()));
                 if (m.isAnnotationPresent(httpMethod.getType())) {
                     String route = null;
                     Annotation a = m.getAnnotation(httpMethod.getType());
-                    
-                    if (a instanceof Delete) route = ((Delete)a).route();
-                    if (a instanceof Get) route = ((Get)a).route();
-                    if (a instanceof Options) route = ((Options)a).route();
-                    if (a instanceof Patch) route = ((Patch)a).route();
-                    if (a instanceof Post) route = ((Post)a).route();
-                    if (a instanceof Put) route = ((Put)a).route();       
-                   
-                    actions.get(httpMethod.getName()).put(route, m);
+
+                    if (a instanceof Delete) {
+                        route = ((Delete) a).route();
+                    }
+                    if (a instanceof Get) {
+                        route = ((Get) a).route();
+                    }
+                    if (a instanceof Options) {
+                        route = ((Options) a).route();
+                    }
+                    if (a instanceof Patch) {
+                        route = ((Patch) a).route();
+                    }
+                    if (a instanceof Post) {
+                        route = ((Post) a).route();
+                    }
+                    if (a instanceof Put) {
+                        route = ((Put) a).route();
+                    }
+
+                    actions.get(httpMethod.getName()).put(route, new Route(route, m));
                 }
             }
         }
@@ -85,15 +95,21 @@ public class JinatraApplication {
         return name;
     }
 
-    public boolean hasRoute(final String route, final String method) {
-        return actions.get(getRequestType(method)).containsKey(route);
+    public Route getRoute(final String route, final String method) {
+        for (Route r : actions.get(getRequestType(method)).values()) {
+            if (r.matches(route)) {
+                return r;
+            }
+        }
+
+        return null;
     }
 
-    public void dispatch(final String route, final HttpServletRequest request, final HttpServletResponse response) {
+    public boolean dispatch(final String route, final HttpServletRequest request, final HttpServletResponse response) {
         try {
-            Map<String, Method> methods = actions.get(getRequestType(request.getMethod()));
-            Method m = methods.get(route);
+            Method m = getRoute(route, request.getMethod()).getMethod();
             m.invoke(instance, new Object[]{request, response});
+            return true;
         } catch (IllegalAccessException ex) {
             Logger.getLogger(JinatraApplication.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalArgumentException ex) {
@@ -101,6 +117,8 @@ public class JinatraApplication {
         } catch (InvocationTargetException ex) {
             Logger.getLogger(JinatraApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return false;
     }
 
     private String getRequestType(final String method) {
