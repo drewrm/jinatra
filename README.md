@@ -1,6 +1,8 @@
 Jinatra - A (poor) Sinatra-esque web framework for Java
 ======================================================
 
+[![Known Vulnerabilities](https://snyk.io/test/github/drewrm/jinatra/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/drewrm/jinatra?targetFile=pom.xml)
+
 My own implementation of an annotation driven, sinatra-esque web framework in java. 
 Don't use this, it's not meant to be useful, just doing it because I can.
 
