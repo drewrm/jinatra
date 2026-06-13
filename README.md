@@ -9,6 +9,11 @@ Don't use this, it's not meant to be useful, just doing it because I can.
 Example:
 
 ```java
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import au.id.andrewmyers.jinatra.annotations.*;
+
 @Application(port=8090)
 public class TestApplication {
     
@@ -22,3 +27,11 @@ public class TestApplication {
     }
 }
 ```
+
+Run with:
+```
+javac -cp target/jinatra-1.0-SNAPSHOT-jar-with-dependencies.jar TestApplication.java
+java -cp "$(pwd):target/jinatra-1.0-SNAPSHOT-jar-with-dependencies.jar" au.id.andrewmyers.jinatra.Jinatra
+
+```
+Then navigate to http://localhost:8090/hello to see the result.
