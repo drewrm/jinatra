@@ -1,17 +1,19 @@
 import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.eclipse.jetty.http.HttpHeader;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
+import org.eclipse.jetty.io.Content;
 import au.id.andrewmyers.jinatra.annotations.*;
 
 @Application(name="Hello World", port=8090)
 public class TestApplication {
 
     @Get(route="/hello")
-    public void hello(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            response.getWriter().println("<html><head><title>Hello World</title></head><body><h1>Hello World</h1></body></html>");
-        } catch (IOException ex) {
-            System.err.println("Derp! " + ex.toString());
-        }
+    public void hello(Request request, Response response, Callback callback) {
+        response.setStatus(200);
+        response.getHeaders().put(HttpHeader.CONTENT_TYPE, "text/html; charset=UTF-8");
+        Content.Sink.write(response, true, "<html><head><title>Hello World</title></head><body><h1>Hello World</h1></body></html>", callback);
     }
 }

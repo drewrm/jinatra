@@ -5,7 +5,6 @@
 package au.id.andrewmyers.jinatra.http;
 
 import java.lang.reflect.Method;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**

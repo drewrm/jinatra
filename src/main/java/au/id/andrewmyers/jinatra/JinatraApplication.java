@@ -14,8 +14,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.Response;
+import org.eclipse.jetty.util.Callback;
+
 
 /**
  *
@@ -105,10 +108,10 @@ public class JinatraApplication {
         return null;
     }
 
-    public boolean dispatch(final String route, final HttpServletRequest request, final HttpServletResponse response) {
+    public boolean dispatch(final String route, final Request request, final Response response, final Callback callback) {
         try {
             Method m = getRoute(route, request.getMethod()).getMethod();
-            m.invoke(instance, new Object[]{request, response});
+            m.invoke(instance, new Object[]{request, response, callback});
             return true;
         } catch (IllegalAccessException ex) {
             Logger.getLogger(JinatraApplication.class.getName()).log(Level.SEVERE, null, ex);
