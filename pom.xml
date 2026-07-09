@@ -13,7 +13,7 @@
 
 <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jetty.version>12.1.10</jetty.version>
+    <jetty.version>12.1.11</jetty.version>
 </properties>
 
 <build>
@@ -55,7 +55,7 @@
     <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.13.1</version>
+        <version>4.13.2</version>
         <scope>test</scope>
     </dependency>
     <dependency>
